@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+import uuid
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -33,3 +37,19 @@ class User(AbstractUser):
     def __str__(self) -> str:
         return self.email
 
+
+
+class APIKey(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, editable=False)
+    key = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    def __str__(self) -> str:
+        key_user = f'Key: {str(self.key)}, User: {self.user}'
+        return key_user
+
+
+# signal to create an api key whenever a new user is created
+@receiver(post_save, sender=User)
+def create_api_key(sender, instance, created, **kwargs):
+    if created:
+        APIKey.objects.create(user=instance)

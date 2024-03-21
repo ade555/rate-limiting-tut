@@ -7,6 +7,7 @@ from .serializers import UserSerializer, APIKeySerializer
 from .models import APIKey
 
 class Signup(generics.GenericAPIView):
+    throttle_classes = []
     serializer_class = UserSerializer
     permission_classes = []
 
@@ -27,6 +28,7 @@ class Signup(generics.GenericAPIView):
 
 class GetAPIKey(generics.GenericAPIView):
     serializer_class = APIKeySerializer
+    throttle_classes = []
 
     def get(self, request:Request):
         api_key = APIKey.objects.get(user=request.user)

@@ -44,7 +44,7 @@ class APIKey(models.Model):
     key = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
-        key_user = f'Key: {str(self.key)}, User: {self.user}'
+        key_user = f'User: {self.user}'
         return key_user
 
 

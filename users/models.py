@@ -46,6 +46,10 @@ class APIKey(models.Model):
     def __str__(self) -> str:
         key_user = f'User: {self.user}'
         return key_user
+    
+    def regenerate_key(self):
+        self.key = uuid.uuid4()
+        self.save()
 
 
 # signal to create an api key whenever a new user is created

@@ -147,10 +147,10 @@ REST_FRAMEWORK = {
         'core.throttling.APIKeyRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'api_key': '1/minute',
+        'api_key': '5/minute',
     },
 }
 
 SIMPLE_JWT={
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=35)
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5)
 }

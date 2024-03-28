@@ -144,7 +144,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_THROTTLE_CLASSES': [
-        'core.throttling.UserRateThrottle',
+        'core.throttling.APIKeyRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
         'api_key': '1/minute',

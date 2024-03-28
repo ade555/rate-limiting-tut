@@ -4,6 +4,7 @@ class APIKeyRateThrottle(UserRateThrottle):
     scope = 'api_key'
 
     def get_cache_key(self, request, view):
-        if request.user.is_authenticated:
-            return f'{self.cache_format}%s' % request.user.apikey.key
+        api_key = request.GET.get('api_key')
+        if api_key:
+            return f'{self.scope}_{api_key}'
         return None

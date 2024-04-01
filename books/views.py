@@ -32,7 +32,7 @@ class BookListCreate(CustomAPIView):
         api_key = request.headers.get("Authorization")
         api_key_obj = APIKey.objects.get(key=api_key)
 
-        queryset = Book.objects.filter(author_email=api_key_obj.user)
+        queryset = Book.objects.filter(author=api_key_obj.user)
         serializer = self.serializer_class(instance=queryset, many=True)
         response = {
              "message":"successful",
@@ -41,7 +41,9 @@ class BookListCreate(CustomAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
     
     def post(self, request:Request):
-        serializer = self.serializer_class(data=request.data, context={'request':request})
+        api_key = request.headers.get("Authorization")
+        api_key_obj = APIKey.objects.get(key=api_key)
+        serializer = self.serializer_class(data=request.data, context={'api_key':api_key_obj})
         if serializer.is_valid():
             serializer.save()
             response = {

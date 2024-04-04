@@ -7,6 +7,9 @@ from django.http import JsonResponse
 from .models import Book
 from users.models import APIKey
 from .serializers import BookSerializer
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CustomAPIView(generics.GenericAPIView):
     permission_classes = []
@@ -19,7 +22,7 @@ class CustomAPIView(generics.GenericAPIView):
                 api_key_obj = APIKey.objects.get(key=api_key)
                 return super().dispatch(request, *args, **kwargs)
             except Exception as e:
-                print(str(e))
+                logger.warning(str(e))
                 return JsonResponse({"message": "Unauthorized. Invalid API key"}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return JsonResponse({"message": "API key required"}, status=status.HTTP_400_BAD_REQUEST)
